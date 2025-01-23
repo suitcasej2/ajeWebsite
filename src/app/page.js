@@ -7,6 +7,8 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isChecked, setIsChecked] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState(null);
 
   const images = [
     "/img/snake1.png",
@@ -49,14 +51,15 @@ export default function Home() {
       });
 
       if (response.ok) {
-        alert("Thank you for subscribing!");
+        setIsSubmitted(true);
+        setError(null);
         e.target.reset();
         setIsChecked(false);
       } else {
         throw new Error("Subscription failed");
       }
     } catch (error) {
-      alert("Sorry, there was an error. Please try again later.");
+      setError("Sorry, there was an error. Please try again later.");
       console.error("Subscription error:", error);
     }
   };
@@ -116,45 +119,57 @@ export default function Home() {
             <h1 className={styles.heading}>
               Stay <span className={styles.wrapped}>Wrapped</span> in Community
             </h1>
-            <p className={styles.description}>
-              Sign up for our newsletter and be the first to receive special
-              offers on future collections and updates on upcoming events and
-              workshops.
-            </p>
 
-            <form className={styles.newsletterForm} onSubmit={handleSubmit}>
-              <input
-                type="text"
-                name="name"
-                placeholder="Your Name"
-                className={styles.input}
-                required
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder="Your Email"
-                className={styles.input}
-                required
-              />
-              <div className={styles.disclaimerWrapper}>
-                <label className={styles.disclaimer}>
+            {!isSubmitted ? (
+              <>
+                <p className={styles.description}>
+                  Sign up for our newsletter and be the first to receive special
+                  offers on future collections and updates on upcoming events
+                  and workshops.
+                </p>
+
+                {error && <p className={styles.errorMessage}>{error}</p>}
+
+                <form className={styles.newsletterForm} onSubmit={handleSubmit}>
                   <input
-                    type="checkbox"
-                    checked={isChecked}
-                    onChange={(e) => setIsChecked(e.target.checked)}
-                    className={styles.checkbox}
+                    type="text"
+                    name="name"
+                    placeholder="Your Name"
+                    className={styles.input}
+                    required
                   />
-                  <span className={styles.disclaimerText}>
-                    I agree to receive marketing communications from Àjẹ́. You
-                    can unsubscribe at any time.
-                  </span>
-                </label>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Your Email"
+                    className={styles.input}
+                    required
+                  />
+                  <div className={styles.disclaimerWrapper}>
+                    <label className={styles.disclaimer}>
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={(e) => setIsChecked(e.target.checked)}
+                        className={styles.checkbox}
+                      />
+                      <span className={styles.disclaimerText}>
+                        I agree to receive marketing communications from Àjẹ́.
+                        You can unsubscribe at any time.
+                      </span>
+                    </label>
+                  </div>
+                  <button type="submit" className={styles.submitButton}>
+                    Sign Up!
+                  </button>
+                </form>
+              </>
+            ) : (
+              <div className={styles.successMessage}>
+                <h2>Thank you for signing up!</h2>
+                <p>We&apos;re excited to have you join our community.</p>
               </div>
-              <button type="submit" className={styles.submitButton}>
-                Sign Up!
-              </button>
-            </form>
+            )}
           </div>
         </div>
       </main>
