@@ -4,12 +4,14 @@ export async function POST(request) {
   try {
     const { name, email } = await request.json();
 
+    console.log("API Key present:", !!process.env.KIT_API_KEY);
+
     const response = await fetch("https://api.kit.com/v4/subscribers", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        "X-Kit-Api-Key": `${process.env.KIT_API_KEY}`,
+        "X-Kit-Api-Key": process.env.KIT_API_KEY?.trim(),
       },
       body: JSON.stringify({
         first_name: name,
@@ -24,6 +26,7 @@ export async function POST(request) {
       console.error("Kit API Response:", {
         status: response.status,
         statusText: response.statusText,
+        headers: Object.fromEntries(response.headers),
         body: errorData,
       });
       throw new Error(
