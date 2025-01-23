@@ -135,16 +135,33 @@
 @media (max-width: 1008px) {
   .contentWrapper {
     flex-direction: column;
+    min-height: 100vh;
   }
 
   .imageSection {
     width: 100%;
-    height: 300px;
+    height: 50vh;
+    position: relative;
+  }
+
+  .slideshow {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .slideImage {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
   }
 
   .formSection {
     width: 100%;
-    padding: 2rem 1rem;
+    height: 60vh; /* 60% of viewport height */
+    padding: 1.5rem;
+    gap: 1rem;
   }
 }
 
@@ -238,7 +255,7 @@
 
   .imageSection {
     width: 100%;
-    height: 40vh;
+    height: 50vh;
     position: relative;
   }
 

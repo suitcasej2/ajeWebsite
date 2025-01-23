@@ -11,11 +11,26 @@ export default function Home() {
   const [error, setError] = useState(null);
 
   const images = [
-    "/img/snake1.png",
-    "/img/fit1.png",
-    "/img/fitbaby1.png",
-    "/img/ancestor1.png",
-    // Add all your image paths here
+    {
+      src: "/img/snake1.png",
+      alt: "Snake Collection Preview",
+      blurDataURL: "data:image/jpeg;base64,/9j...", // Add your base64 blur image
+    },
+    {
+      src: "/img/fit1.png",
+      alt: "Fit Collection Preview",
+      blurDataURL: "data:image/jpeg;base64,/9j...", // Add your base64 blur image
+    },
+    {
+      src: "/img/fitbaby1.png",
+      alt: "Fit Baby Collection Preview",
+      blurDataURL: "data:image/jpeg;base64,/9j...", // Add your base64 blur image
+    },
+    {
+      src: "/img/ancestor1.png",
+      alt: "Ancestor Collection Preview",
+      blurDataURL: "data:image/jpeg;base64,/9j...", // Add your base64 blur image
+    },
   ];
 
   useEffect(() => {
@@ -70,9 +85,9 @@ export default function Home() {
         <div className={styles.contentWrapper}>
           <div className={styles.imageSection}>
             <div className={styles.slideshow}>
-              {images.map((src, index) => (
+              {images.map((image, index) => (
                 <motion.div
-                  key={src}
+                  key={image.src}
                   className={styles.slideImage}
                   initial={{ opacity: 0 }}
                   animate={{
@@ -92,11 +107,15 @@ export default function Home() {
                   }}
                 >
                   <Image
-                    src={src}
-                    alt={`Slide ${index + 1}`}
+                    src={image.src}
+                    alt={image.alt}
                     fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    quality={85}
+                    priority={index === 0 || index === 1}
+                    placeholder="blur"
+                    blurDataURL={image.blurDataURL}
                     style={{ objectFit: "cover" }}
-                    priority={index === 0}
                   />
                 </motion.div>
               ))}
